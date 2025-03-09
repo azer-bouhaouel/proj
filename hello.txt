@@ -1,3 +1,0 @@
-hello in main
-i just added my first feature (azer)
-feature 2 is added
