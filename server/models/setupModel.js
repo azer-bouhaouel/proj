@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
-const setupShema = new mongoose.Schema({
+const setupSchema = new mongoose.Schema({
   isCompleted: { type: Boolean, required: true },
 });
 
-const setupModel = mongoose.model("setup", setupShema);
+const setupModel = mongoose.model("setup", setupSchema);
 
 module.exports = setupModel;

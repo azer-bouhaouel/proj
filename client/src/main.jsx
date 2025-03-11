@@ -17,6 +17,9 @@ import DisplayClients from "./pages/DisplayClients.jsx";
 import DisplayEmployees from "./pages/DisplayEmployees.jsx";
 import DisplayInstallations from "./pages/DisplayInstallations.jsx";
 import UpdateProfile from "./pages/UpdateProfile.jsx";
+import EditClient from "./pages/EditClient.jsx";
+import EditEmployee from "./pages/EditEmployee.jsx";
+import EditInstallation from "./pages/EditInstallation.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -36,6 +39,12 @@ createRoot(document.getElementById("root")).render(
               <Route path="/addClient" element={<AddClient />} />
               <Route path="/displayClients" element={<DisplayClients />} />
               <Route path="/displayEmployees" element={<DisplayEmployees />} />
+              <Route path="/editClient/:id" element={<EditClient />} />
+              <Route path="/editEmployee/:id" element={<EditEmployee />} />
+              <Route
+                path="/editInstallation/:id"
+                element={<EditInstallation />}
+              />
               <Route
                 path="/displayInstallations"
                 element={<DisplayInstallations />}

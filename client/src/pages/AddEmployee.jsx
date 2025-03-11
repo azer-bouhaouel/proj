@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useState,useContext } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "../context/authContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function AddEmployee() {
   const { user } = useContext(AuthContext);
@@ -12,15 +12,10 @@ function AddEmployee() {
 }
 
 function Child() {
-  const [employeeInfo, setEmployeeInfo] = useState({
-    fullName: "",
-    email: "",
-    cin: "",
-    phone: "",
-    address: "",
-    role: "",
-  });
-  
+  const [employeeInfo, setEmployeeInfo] = useState({});
+
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmployeeInfo({ ...employeeInfo, [name]: value });
@@ -29,11 +24,17 @@ function Child() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/admin/addEmployee", employeeInfo)
+      .post("http://localhost:3001/employee/addEmployee", employeeInfo)
       .then(async (res) => {
         const message = await res.data.message;
-        console.log(message);
+        const ok = await res.data.ok;
 
+        if (ok) {
+          navigate("/displayEmployees");
+        } else {
+          console.log(message);
+          alert(message);
+        }
       })
       .catch((err) => {
         console.log("client error :", err);
@@ -67,7 +68,6 @@ function Child() {
                 name="fullName"
                 type="text"
                 onChange={handleChange}
-                value={employeeInfo.fullName}
                 required
                 autoComplete="fullName"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -88,7 +88,6 @@ function Child() {
                 name="email"
                 type="email"
                 onChange={handleChange}
-                value={employeeInfo.email}
                 required
                 autoComplete="email"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -109,7 +108,6 @@ function Child() {
                 name="cin"
                 type="text"
                 onChange={handleChange}
-                value={employeeInfo.cin}
                 required
                 autoComplete="cin"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -130,7 +128,6 @@ function Child() {
                 name="phone"
                 type="text"
                 onChange={handleChange}
-                value={employeeInfo.phone}
                 required
                 autoComplete="phone"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -151,7 +148,6 @@ function Child() {
                 name="address"
                 type="text"
                 onChange={handleChange}
-                value={employeeInfo.address}
                 required
                 autoComplete="address"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -171,7 +167,6 @@ function Child() {
                 id="role"
                 name="role"
                 onChange={handleChange}
-                value={employeeInfo.role}
                 required
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               >

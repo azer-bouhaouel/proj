@@ -4,23 +4,26 @@ import axios from "axios";
 
 function UpdateProfileForAdmin() {
   const { user, setUser } = useContext(AuthContext);
-  const [newInfo, setNewInfo] = useState({ ...user, password: "" });
+  const [newInfo, setNewInfo] = useState(user);
   const [isChanged, setIsChanged] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/admin/changeCredential", newInfo)
+      .put("http://localhost:3001/auth/changeAdminCredential", newInfo)
       .then(async (res) => {
         const message = await res.data.message;
         const updatedUser = await res.data.user;
+        const ok = await res.data.ok;
 
-        if (updatedUser) {
+        if (ok) {
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(updatedUser));
           setUser(updatedUser);
+        } else {
+          console.log(message);
+          alert(message);
         }
-        console.log(message);
       })
       .catch((err) => {
         console.log("client err : ", err);
@@ -66,8 +69,8 @@ function UpdateProfileForAdmin() {
               <input
                 id="login"
                 name="login"
-                value={newInfo.login}
                 onChange={handleChange}
+                value={newInfo.login}
                 type="text"
                 required
                 autoComplete="login"
@@ -87,8 +90,8 @@ function UpdateProfileForAdmin() {
               <input
                 id="fullName"
                 name="fullName"
-                value={newInfo.fullName}
                 onChange={handleChange}
+                value={newInfo.fullName}
                 type="text"
                 required
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -96,21 +99,39 @@ function UpdateProfileForAdmin() {
             </div>
           </div>
 
+          {user.passwordChanged && (
+            <div>
+              <label
+                htmlFor="oldPassword"
+                className="block text-sm/6 font-medium text-gray-900"
+              >
+                Old Password
+              </label>
+              <div className="mt-2">
+                <input
+                  id="oldPassword"
+                  name="oldPassword"
+                  onChange={handleChange}
+                  type="password"
+                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                />
+              </div>
+            </div>
+          )}
+
           <div>
             <label
               htmlFor="password"
               className="block text-sm/6 font-medium text-gray-900"
             >
-              Password
+              New Password
             </label>
             <div className="mt-2">
               <input
                 id="password"
                 name="password"
                 onChange={handleChange}
-                value={newInfo.password}
-                type="text"
-                required
+                type="password"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>

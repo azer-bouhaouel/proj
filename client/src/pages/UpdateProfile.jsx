@@ -12,7 +12,7 @@ function UpdateProfile() {
     return <UpdateProfileForAdmin />;
   }
 
-  if (user.role === "project manager") {
+  if (user.role === "project manager" || user.role === "warehouse manager") {
     return <UpdateProfileForEmployee />;
   }
 
